@@ -1,0 +1,7 @@
+FROM mysql:latest
+LABEL description="Mysql latest"
+EXPOSE 3306
+ENV LANG=C.UTF-8
+
+# copy scripts
+COPY ./data/* /docker-entrypoint-initdb.d/
