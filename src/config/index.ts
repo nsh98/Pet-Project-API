@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 dotenv.config();
-const { SERVER_PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, LOG_PATH } = process.env;
+const { SERVER_PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, LOG_PATH, PROJECT_NAME } = process.env;
 
 export default () => ({
-  projectName: 'nestjs-base',
+  projectName: PROJECT_NAME,
   serverPort: parseInt(SERVER_PORT) || 3000,
   dbConfig: {
     client: "mysql2",
@@ -15,5 +15,5 @@ export default () => ({
     },
     pool: { min: 0, max: 7 },
   },
-  logPath: LOG_PATH
+  logPath: LOG_PATH,
 });

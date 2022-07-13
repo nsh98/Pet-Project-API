@@ -1,4 +1,4 @@
-import initUserTable from "./users";
+import initUserTable from "./user";
 
 export default {
   initUserTable,

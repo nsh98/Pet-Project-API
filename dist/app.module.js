@@ -13,6 +13,7 @@ const logger_module_1 = require("./logger/logger.module");
 const nest_winston_1 = require("nest-winston");
 const connectDatabase_module_1 = require("./connectDatabase/connectDatabase.module");
 const users_module_1 = require("./users/users.module");
+const response_module_1 = require("./response/response.module");
 const config_2 = require("./config");
 let AppModule = class AppModule {
 };
@@ -28,6 +29,7 @@ AppModule = __decorate([
             nest_winston_1.WinstonModule.forRoot({}),
             connectDatabase_module_1.ConnectDatabaseModule,
             users_module_1.UsersModule,
+            response_module_1.ResponseModule,
         ],
     })
 ], AppModule);

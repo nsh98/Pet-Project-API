@@ -4,6 +4,7 @@ import { LoggerModule } from "./logger/logger.module";
 import { WinstonModule } from "nest-winston";
 import { ConnectDatabaseModule } from "./connectDatabase/connectDatabase.module";
 import { UsersModule } from "./users/users.module";
+import { ResponseModule } from './response/response.module';
 import configuration from "./config";
 
 @Module({
@@ -17,6 +18,7 @@ import configuration from "./config";
     WinstonModule.forRoot({}),
     ConnectDatabaseModule,
     UsersModule,
+    ResponseModule,
   ],
 })
 export class AppModule {}

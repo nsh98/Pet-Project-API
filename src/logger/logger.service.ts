@@ -25,7 +25,7 @@ export class LoggerService {
     private readonly configService: ConfigService
   ) {
     const appFormatter = format.combine(
-      format.label({ label: this.configService.get("appName") }),
+      format.label({ label: this.configService.get("projectName") }),
       format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
       format.errors({ stack: true }),
       format.printf(
@@ -35,6 +35,8 @@ export class LoggerService {
     );
 
     const httpFormatter = format.combine(
+      format.label({ label: this.configService.get("projectName") }),
+      format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
       format.printf(
         (info) =>
           `[${info.label || ""}]\t${info.timestamp}\t[${info.level || ""}]\t[${
@@ -46,6 +48,8 @@ export class LoggerService {
     );
 
     const databaseFormatter = format.combine(
+      format.label({ label: this.configService.get("projectName") }),
+      format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
       format.printf(
         (info) =>
           `[${info.label || ""}]\t${info.timestamp}\t[${info.level || ""}]\t[${
@@ -92,7 +96,7 @@ export class LoggerService {
       });
     };
     this.DATABASE = loggers.get("database");
-    this.DATABASE.query = async (data) => {
+    this.DATABASE.query = async (data: any) => {
       this.DATABASE.info(data, { type: "SQL" });
     };
 
