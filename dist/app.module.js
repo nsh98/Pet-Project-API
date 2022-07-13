@@ -8,15 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
+const config_1 = require("@nestjs/config");
+const logger_module_1 = require("./logger/logger.module");
+const nest_winston_1 = require("nest-winston");
+const connectDatabase_module_1 = require("./connectDatabase/connectDatabase.module");
+const users_module_1 = require("./users/users.module");
+const config_2 = require("./config");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                load: [config_2.default],
+                envFilePath: ".env",
+            }),
+            logger_module_1.LoggerModule,
+            nest_winston_1.WinstonModule.forRoot({}),
+            connectDatabase_module_1.ConnectDatabaseModule,
+            users_module_1.UsersModule,
+        ],
     })
 ], AppModule);
 exports.AppModule = AppModule;
