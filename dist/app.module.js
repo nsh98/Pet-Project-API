@@ -12,10 +12,14 @@ const config_1 = require("@nestjs/config");
 const logger_module_1 = require("./logger/logger.module");
 const nest_winston_1 = require("nest-winston");
 const connectDatabase_module_1 = require("./connectDatabase/connectDatabase.module");
-const users_module_1 = require("./users/users.module");
+const user_module_1 = require("./user/user.module");
 const response_module_1 = require("./response/response.module");
 const config_2 = require("./config");
+const httpLog_1 = require("./middlewares/httpLog");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer.apply(httpLog_1.HttpLogger).forRoutes("*");
+    }
 };
 AppModule = __decorate([
     (0, common_1.Module)({
@@ -28,7 +32,7 @@ AppModule = __decorate([
             logger_module_1.LoggerModule,
             nest_winston_1.WinstonModule.forRoot({}),
             connectDatabase_module_1.ConnectDatabaseModule,
-            users_module_1.UsersModule,
+            user_module_1.UsersModule,
             response_module_1.ResponseModule,
         ],
     })

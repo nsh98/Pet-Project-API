@@ -1,5 +1,5 @@
 import { Controller, Get, Post } from "@nestjs/common";
-import { UsersService } from "./users.service";
+import { UsersService } from "./user.service";
 import { ConnectDatabaseService } from "../connectDatabase/connectDatabase.service";
 
 @Controller("users")

@@ -39,11 +39,11 @@ export class LoggerService {
       format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
       format.printf(
         (info) =>
-          `[${info.label || ""}]\t${info.timestamp}\t[${info.level || ""}]\t[${
-            info.type || ""
-          }]\t[${info.ip || ""}]\t[${info.method || ""}]\t${info.url || ""}\t[${
-            info.identify || ""
-          }]`
+          `[${info.label || ""}]\t${info.timestamp}\t[${
+            info.level.toUpperCase() || ""
+          }]\t[${info.type || ""}]\t[${info.ip || ""}]\t[${
+            info.method || ""
+          }]\t${info.url || ""}\t[${info.identify || ""}]`
       )
     );
 
@@ -52,9 +52,11 @@ export class LoggerService {
       format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
       format.printf(
         (info) =>
-          `[${info.label || ""}]\t${info.timestamp}\t[${info.level || ""}]\t[${
-            info.type || "SQL"
-          }]\t${info.message ? JSON.stringify(info.message) : ""}`
+          `[${info.label || ""}]\t${info.timestamp}\t[${
+            info.level.toUpperCase() || ""
+          }]\t[${info.type || "SQL"}]\t${
+            info.message ? JSON.stringify(info.message) : ""
+          }`
       )
     );
 
@@ -90,7 +92,7 @@ export class LoggerService {
       this.HTTP.info(data, {
         type: "REQUEST",
         ip: request.ip,
-        url: request.url,
+        url: request.baseUrl,
         method: request.method,
         identify: request.user,
       });
@@ -103,7 +105,5 @@ export class LoggerService {
     this.APP.exitOnError = false;
     this.HTTP.exitOnError = false;
     this.DATABASE.exitOnError = false;
-
-    this.APP.info("Logger service initialized");
   }
 }
