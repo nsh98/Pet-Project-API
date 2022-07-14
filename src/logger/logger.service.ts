@@ -63,6 +63,7 @@ export class LoggerService {
     loggers.add("app", {
       format: appFormatter,
       transports: [
+        new transports.Console(),
         this.getTransports("info", "app-info.log"),
         this.getTransports("error", "app-error.log"),
       ],
@@ -70,12 +71,16 @@ export class LoggerService {
 
     loggers.add("http", {
       format: httpFormatter,
-      transports: [this.getTransports("info", "http-info.log")],
+      transports: [
+        new transports.Console(),
+        this.getTransports("info", "http-info.log"),
+      ],
     });
 
     loggers.add("database", {
       format: databaseFormatter,
       transports: [
+        new transports.Console(),
         this.getTransports("info", "database-info.log"),
         this.getTransports("error", "database-error.log"),
       ],

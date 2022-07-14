@@ -8,11 +8,13 @@ const initUserTable = (knex: any) => {
         property
           .datetime("create_time")
           .notNullable()
-          .defaultTo(knex.raw("NOW()"));
-        property.datetime("update_time");
+          .defaultTo(knex.raw("CURRENT_TIMESTAMP"));
+        property
+          .datetime("update_time")
+          .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
         property.boolean("is_delete").defaultTo(0);
       });
-    };
+    }
   });
 };
 

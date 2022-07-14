@@ -1,33 +1,37 @@
-import { Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, Post } from "@nestjs/common";
 import { UsersService } from "./user.service";
-import { ConnectDatabaseService } from "../connectDatabase/connectDatabase.service";
 
-@Controller("users")
+@Controller("user")
 export class UsersController {
-  constructor(private readonly usersService: UsersService, private connectDatabaseService: ConnectDatabaseService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post("create")
-  createNewUser(data: object): Promise<{}>{
-    return this.usersService.createNewUser(data);
+  @HttpCode(200)
+  createNewUser(@Body() body): Promise<{}> {
+    return this.usersService.createNewUser(body);
   }
 
   @Post("edit")
-  editUser(userId: number, data: object): Promise<{}>{
-    return this.usersService.editUser(userId, data);
+  @HttpCode(200)
+  editUser(@Body() body): Promise<{}> {
+    return this.usersService.editUser(body);
   }
 
   @Post("delete")
-  deleteUser(userId: number): Promise<{}>{
+  @HttpCode(200)
+  deleteUser(userId: number): Promise<{}> {
     return this.usersService.deleteUser(userId);
   }
 
-  @Post()
-  getAllUsers(): Promise<{}>{
+  @Post("get-all")
+  @HttpCode(200)
+  getAllUsers(): Promise<{}> {
     return this.usersService.getAllUsers();
   }
 
-  @Post()
-  getUserById(userId: number): Promise<{}>{
-    return this.usersService.getUserById(userId);
+  @Post("get-one")
+  @HttpCode(200)
+  getUserById(@Body() body): Promise<{}> {
+    return this.usersService.getUserById(body.id);
   }
 }

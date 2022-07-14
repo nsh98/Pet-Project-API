@@ -11,28 +11,57 @@ export class UsersService {
     private readonly response: ResponseService
   ) {}
 
-  async createNewUser(data: object): Promise<{}> {
+  async createNewUser(data): Promise<{}> {
     try {
+      const { userName, password } = data;
       const connectDatabase = await this.db.getDBConnection();
-      const user = await connectDatabase.insert(data).into("user");
-      return this.response.success("New user created!", user);
+      const existingUser = await connectDatabase
+        .select("*")
+        .from("user")
+        .where({ user_name: userName })
+        .first();
+
+      if (existingUser) {
+        return this.response.warn(409, "User already exists");
+      }
+      const dataToBeInserted = {
+        user_name: userName,
+        password: password,
+      };
+      await connectDatabase.insert(dataToBeInserted).into("user");
+      return this.response.success("New user created!");
     } catch (error) {
       this.logger.APP.error(error.stack);
       return this.response.error(500, "Internal server error");
     }
   }
 
-  async editUser(userId: number, data: object): Promise<{}> {
+  async editUser(data): Promise<{}> {
     try {
       const connectDatabase = await this.db.getDBConnection();
-      const user = await connectDatabase
-        .update(data)
-        .where("id", userId)
-        .into("users");
-      if (user.length === 0) {
+      const { userId, userName, password } = data;
+
+      const existingUser = await connectDatabase
+        .select("*")
+        .from("user")
+        .where({ id: userId })
+        .first();
+
+      if (!existingUser) {
         return this.response.warn(404, "Not found user");
       }
-      return this.response.success("User updated!", user);
+
+      const dataToBeInserted = {
+        user_name: userName,
+        password: password,
+      };
+
+      await connectDatabase
+        .update(dataToBeInserted)
+        .where("id", userId)
+        .into("user");
+
+      return this.response.success("User updated!");
     } catch (error) {
       this.logger.APP.error(error.stack);
       return this.response.error(500, "Internal server error");
@@ -56,7 +85,7 @@ export class UsersService {
     }
   }
 
-  async getAllUsers(): Promise<{}>{
+  async getAllUsers(): Promise<{}> {
     try {
       const connectDatabase = await this.db.getDBConnection();
       const user = await connectDatabase.select("*").from("user");
@@ -70,10 +99,14 @@ export class UsersService {
     }
   }
 
-  async getUserById(userId: number): Promise<{}>{
+  async getUserById(userId: number): Promise<{}> {
     try {
       const connectDatabase = await this.db.getDBConnection();
-      const user = await connectDatabase.select("*").from("users").where("id", userId).first();
+      const user = await connectDatabase
+        .select("*")
+        .from("user")
+        .where("id", userId)
+        .first();
       if (!user) {
         return this.response.warn(404, "Not found user");
       }
